@@ -34,6 +34,14 @@ See [todo list in main project](../../CLAUDE.md#implementation-progress)
 - Added authentication tables for passkeys support
 - Built tenant utilities and context provider
 
+### 2024-06-29: Database Infrastructure Updates
+- Refactored from Docker to hosted Supabase for simpler development
+- Implemented Row-Level Security (RLS) setup scripts
+- Added tenant context provider for secure multi-tenant queries
+- Created database testing infrastructure with Drizzle
+- Enhanced auth utilities with proper tenant isolation
+- Added comprehensive test suite for database operations
+
 ## Technical Decisions
 
 | Decision | Rationale | Date |
@@ -45,6 +53,8 @@ See [todo list in main project](../../CLAUDE.md#implementation-progress)
 | Australian English | Localisation for primary market | 2024-01-29 |
 | Drizzle ORM | Type-safe SQL with excellent TypeScript support | 2024-01-29 |
 | Shared database multi-tenancy | Simpler than separate databases, easier scaling | 2024-01-29 |
+| Hosted Supabase over Docker | Simpler setup, better for rapid development | 2024-06-29 |
+| Row-Level Security (RLS) | Database-level tenant isolation for security | 2024-06-29 |
 
 ## Blockers & Risks
 

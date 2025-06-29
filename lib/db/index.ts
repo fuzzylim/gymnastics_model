@@ -2,6 +2,12 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import * as schema from './schema'
 
+// Load environment variables in development
+if (process.env.NODE_ENV !== 'production') {
+  const { config } = require('dotenv')
+  config()
+}
+
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is required')
 }

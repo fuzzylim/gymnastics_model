@@ -7,7 +7,7 @@ async function testDatabase() {
   console.log('🧪 Testing hosted Supabase database...\n');
   
   // Load environment variables
-  require('dotenv').config({ path: '.env.local' });
+  require('dotenv').config();
   
   const dbUrl = process.env.DATABASE_URL;
   
@@ -22,7 +22,10 @@ async function testDatabase() {
   try {
     const sql = postgres(dbUrl, {
       max: 1,
-      connection: { application_name: 'gymnastics_model_test' }
+      ssl: { rejectUnauthorized: false },
+      connection: { 
+        application_name: 'gymnastics_model_test'
+      }
     });
     
     // Test connection

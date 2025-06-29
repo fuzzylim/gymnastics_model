@@ -185,14 +185,42 @@ Three methods for tenant identification:
 ### Tenant Operations
 
 ```typescript
-// Get tenant by slug
+// Get tenant by slug (no context needed - lookup operation)
 const tenant = await getTenantBySlug('acme-corp')
 
-// Check user access
+// Check user access (no context needed - cross-tenant check)
 const hasAccess = await userHasTenantAccess(userId, tenantId)
 
-// Get user's role
+// Get user's role (no context needed - cross-tenant check)
 const role = await getUserTenantRole(userId, tenantId)
+
+// Get tenant members (uses tenant context for security)
+const members = await getTenantMembers(tenantId)
+
+// Invite user to tenant (uses tenant context and permission checks)
+const membership = await inviteUserToTenant(tenantId, 'user@example.com', 'member', inviterId)
+```
+
+### Tenant Context Operations
+
+For custom database operations, use the `withTenantContext` wrapper:
+
+```typescript
+import { withTenantContext } from '@/lib/db/tenant-context'
+
+// Execute tenant-scoped queries
+const results = await withTenantContext(tenantId, async (db) => {
+  return await db
+    .select()
+    .from(customTable)
+    .where(eq(customTable.status, 'active'))
+})
+
+// Use TenantContext class for user-specific operations
+const context = new TenantContext(userId, tenantId)
+const userTenants = await context.getUserTenants()
+const currentTenant = await context.getCurrentTenant()
+const hasAdminRole = await context.hasRole(['admin', 'owner'])
 ```
 
 ### Authentication Operations
@@ -260,8 +288,10 @@ DATABASE_URL="postgresql://postgres:password@localhost:5432/gymnastics_model"
 
 ### Tenant Isolation
 - Every query must include tenant context
+- Row-Level Security (RLS) enforced at database level (see [RLS Guide](./row-level-security-guide.md))
 - Middleware validates access
 - No direct database access from frontend
+- Use `withTenantContext` wrapper for all tenant queries
 
 ### Authentication Security
 - Passkey credentials stored securely

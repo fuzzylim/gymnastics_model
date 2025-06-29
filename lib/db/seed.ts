@@ -1,3 +1,8 @@
+import { config } from 'dotenv'
+
+// Load environment variables before importing db
+config()
+
 import { db } from './index'
 import { tenants, users, tenantMemberships } from './schema'
 
