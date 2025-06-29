@@ -49,17 +49,17 @@ Modern Next.js application with:
 
 ### Phase 2: Authentication
 
-- [ ] Implement passkeys registration flow
-- [ ] Implement passkeys login flow
-- [ ] Add magic link fallback
-- [ ] Setup NextAuth configuration
+- [x] Implement passkeys registration flow
+- [x] Implement passkeys login flow
+- [x] Add magic link fallback
+- [x] Setup NextAuth configuration
 
 ### Phase 3: Multi-tenancy
 
-- [ ] Implement tenant resolution middleware
-- [ ] Create tenant context provider
-- [ ] Add row-level security helpers
-- [ ] Setup tenant-scoped API routes
+- [x] Implement tenant resolution middleware
+- [x] Create tenant context provider
+- [x] Add row-level security helpers
+- [x] Setup tenant-scoped API routes
 
 ### Phase 4: Core Features
 

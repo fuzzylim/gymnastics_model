@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { getTenantByDomain, getTenantBySlug } from './lib/db/tenant-utils'
+import { auth } from './lib/auth/config'
 
 /**
  * Middleware for tenant resolution and authentication
@@ -8,14 +9,48 @@ import { getTenantByDomain, getTenantBySlug } from './lib/db/tenant-utils'
 export async function middleware(request: NextRequest) {
   const { pathname, hostname } = request.nextUrl
 
-  // Skip middleware for non-tenant paths
+  // Skip middleware for static files and API routes
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/favicon.ico') ||
+    pathname.match(/\.(svg|png|jpg|jpeg|gif|webp)$/)
+  ) {
+    return NextResponse.next()
+  }
+
+  // Get authentication session
+  const session = await auth()
+
+  // Define public routes that don't require authentication
+  const publicRoutes = [
+    '/',
+    '/auth/login',
+    '/auth/register',
+    '/auth/error',
+  ]
+
+  // Check if the current path is public (considering tenant prefixes)
+  const isPublicRoute = publicRoutes.some(route => {
+    return pathname === route || pathname.endsWith(route)
+  })
+
+  // Authentication check for protected routes
+  if (!session && !isPublicRoute) {
+    const signInUrl = new URL('/auth/login', request.url)
+    signInUrl.searchParams.set('callbackUrl', request.url)
+    return NextResponse.redirect(signInUrl)
+  }
+
+  // If authenticated user tries to access auth pages, redirect to dashboard
+  if (session && (pathname.includes('/auth/login') || pathname.includes('/auth/register'))) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
+  // Skip tenant resolution for auth routes and home page
+  if (
     pathname === '/' ||
-    pathname.startsWith('/login') ||
-    pathname.startsWith('/register')
+    pathname.startsWith('/auth/')
   ) {
     return NextResponse.next()
   }
@@ -60,11 +95,18 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url))
     }
 
-    // Add tenant info to request headers
+    // Add tenant and user info to request headers
     const headers = new Headers(request.headers)
     headers.set('x-tenant-id', tenant.id)
     headers.set('x-tenant-slug', tenant.slug)
+    
+    if (session?.user?.id) {
+      headers.set('x-user-id', session.user.id)
+    }
 
+    // For authenticated users, we could add tenant membership validation here
+    // This will be implemented when we integrate with tenant context
+    
     // Modify the URL for local development to remove tenant from path
     // e.g. /tenant-slug/dashboard -> /dashboard
     if (isLocalhost && pathname.startsWith(`/${subdomain}`)) {
