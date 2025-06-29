@@ -78,13 +78,34 @@ export async function createCredential(credentialData: NewCredential): Promise<C
 }
 
 export async function updateCredentialCounter(credentialId: string, counter: number): Promise<void> {
+  // Fetch the current counter value for the given credentialId
+  const existingCredential = await db
+    .select({ counter: credentials.counter })
+    .from(credentials)
+    .where(eq(credentials.credentialId, credentialId))
+    .limit(1);
+
+  if (!existingCredential[0]) {
+    throw new Error(`Credential with ID ${credentialId} not found.`);
+  }
+
+  const currentCounter = existingCredential[0].counter;
+
+  // Ensure the new counter value is greater than the current counter
+  if (counter <= currentCounter) {
+    throw new Error(
+      `New counter value (${counter}) must be greater than the current counter value (${currentCounter}).`
+    );
+  }
+
+  // Update the counter and lastUsed timestamp
   await db
     .update(credentials)
     .set({ 
       counter, 
       lastUsed: new Date(),
     })
-    .where(eq(credentials.credentialId, credentialId))
+    .where(eq(credentials.credentialId, credentialId));
 }
 
 export async function deleteCredential(credentialId: string): Promise<void> {
