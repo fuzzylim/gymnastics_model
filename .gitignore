@@ -39,3 +39,10 @@ next-env.d.ts
 # drizzle
 /drizzle
 .drizzle
+
+# supabase
+supabase/db/data
+supabase/storage
+supabase/functions/*
+!supabase/functions/.gitkeep
+.env.supabase

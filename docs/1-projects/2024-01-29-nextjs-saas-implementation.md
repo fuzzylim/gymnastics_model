@@ -48,7 +48,7 @@ See [todo list in main project](../../CLAUDE.md#implementation-progress)
 
 ## Blockers & Risks
 
-- [ ] Need PostgreSQL database for development
+- [x] Need PostgreSQL database for development (Supabase configured)
 - [ ] Passkeys browser support varies
 - [ ] Vercel Edge runtime limitations
 
