@@ -6,3 +6,5 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@simplewebauthn/browser', '@simplewebauthn/server'],
   },
 }
+
+export default nextConfig;
