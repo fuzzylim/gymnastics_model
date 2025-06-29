@@ -10,6 +10,7 @@ This document outlines our documentation standards and processes to ensure all f
 2. **PARA Method**: Organise docs by Projects, Areas, Resources, Archive
 3. **Living Documentation**: Keep docs updated as code evolves
 4. **User-Focused**: Write for the intended audience
+5. **Commit Integration**: Documentation updates are REQUIRED with every commit
 
 ## Documentation Requirements
 
@@ -141,6 +142,34 @@ graph LR
     B --> C[Service]
     C --> D[Database]
 ```
+
+## Commit Documentation Policy
+
+**Every commit MUST include relevant documentation updates.**
+
+### Pre-Commit Checklist
+- [ ] Feature/fix implemented
+- [ ] Tests written/updated
+- [ ] Documentation updated
+- [ ] Examples added (if applicable)
+- [ ] Australian English verified
+
+### Documentation Update Matrix
+
+| Change Type | Required Documentation |
+|------------|----------------------|
+| New Feature | Project doc, API docs, examples |
+| Bug Fix | Update affected docs, add troubleshooting |
+| Architecture Change | Update architecture.md, security review |
+| API Change | API docs, migration guide, examples |
+| Security Update | Security guidelines, audit log |
+| Performance | Performance guide, metrics |
+| Refactoring | Update affected docs only |
+
+### Enforcement
+- PR reviews MUST verify documentation updates
+- Missing documentation = PR rejection
+- Documentation quality is as important as code quality
 
 ## Review Process
 

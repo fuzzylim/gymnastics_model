@@ -1,5 +1,8 @@
 {
   "cSpell.language": "en-AU",
+  "cSpell.ignoreRegExpList": [
+    "/\\b(organize|optimization|authorize|authorization|color|center|behavior|favor|labor|neighbor|defense|traveling|modeling|labeled|minimize|maximize|prioritize|standardize|customize|categorize|optimize|Unauthorized)\\b/g"
+  ],
   "cSpell.words": [
     "organisation",
     "organisations",
