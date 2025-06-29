@@ -12,6 +12,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx lib/db/seed.ts",
+    "db:test": "node scripts/test-db.js",
     "test": "vitest",
     "test:ui": "vitest --ui"
   },

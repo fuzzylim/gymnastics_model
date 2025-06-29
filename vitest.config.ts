@@ -8,6 +8,11 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./test/setup.ts'],
+    exclude: [
+      '**/node_modules/**',
+      '**/supabase/db/data/**',
+      '**/supabase/storage/**',
+    ],
   },
   resolve: {
     alias: {

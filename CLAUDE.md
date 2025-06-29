@@ -40,7 +40,7 @@ Modern Next.js application with:
 - [x] Initialise Next.js project with TypeScript
 - [x] Setup Drizzle ORM with PostgreSQL
 - [x] Configure multi-tenant database schema
-- [ ] Setup development environment
+- [x] Setup hosted Supabase development environment
 
 ### Phase 2: Authentication
 
@@ -160,25 +160,29 @@ gh pr create --title "feat: Add feature" --body "## Changes
 
 ## Environment Variables
 
+**Recommended: Use hosted Supabase instead of local Docker setup**
+
 ```env
-# Database
-DATABASE_URL=
+# Database - Hosted Supabase
+DATABASE_URL=postgresql://postgres:[password]@db.[project-ref].supabase.co:5432/postgres
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://[project-ref].supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=[anon-key]
+SUPABASE_SERVICE_ROLE_KEY=[service-role-key]
 
 # Authentication
-AUTH_URL=
-AUTH_SECRET=
+AUTH_URL=http://localhost:3000
+AUTH_SECRET=[random-32-char-string]
 
 # WebAuthn
-RP_NAME=
-RP_ID=
-ORIGIN=
+RP_NAME="Gymnastics Model"
+RP_ID=localhost
+ORIGIN=http://localhost:3000
 
-# Redis
+# Redis (optional)
 UPSTASH_REDIS_REST_URL=
 UPSTASH_REDIS_REST_TOKEN=
-
-# Vercel
-VERCEL_URL=
 ```
 
 ## Security Considerations

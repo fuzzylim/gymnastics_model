@@ -40,9 +40,12 @@ next-env.d.ts
 /drizzle
 .drizzle
 
-# supabase
-supabase/db/data
-supabase/storage
-supabase/functions/*
-!supabase/functions/.gitkeep
-.env.supabase
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+
+# Test results
+TEST_RESULTS.md
