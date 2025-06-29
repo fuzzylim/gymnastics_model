@@ -102,8 +102,8 @@ describe.skipIf(!runIntegrationTests)('Tenant Isolation Integration Tests', () =
       expect(tenant2Members.length).toBe(1) // only owner
       
       // Verify no cross-tenant data
-      const tenant1UserIds = tenant1Members.map(m => m.userId)
-      const tenant2UserIds = tenant2Members.map(m => m.userId)
+      const tenant1UserIds = tenant1Members.map((m: any) => m.userId)
+      const tenant2UserIds = tenant2Members.map((m: any) => m.userId)
       
       expect(tenant1UserIds).toContain(user1Id)
       expect(tenant1UserIds).toContain(user2Id)

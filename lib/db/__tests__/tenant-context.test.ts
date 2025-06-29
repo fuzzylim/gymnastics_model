@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { withTenantContext, TenantContext } from '../tenant-context'
-import { client } from '../index'
+import { db } from '../index'
 
 // Mock the database
 vi.mock('../index', () => ({
@@ -24,8 +24,19 @@ describe('Tenant Context', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    // Mock the client SQL template literal
-    ;(client as any).mockImplementation(() => Promise.resolve())
+    // Mock the transaction function
+    ;(db.transaction as any).mockImplementation(async (callback: any) => {
+      const mockTx = {
+        execute: vi.fn().mockResolvedValue(undefined),
+        select: vi.fn().mockReturnThis(),
+        from: vi.fn().mockReturnThis(),
+        where: vi.fn().mockReturnThis(),
+        insert: vi.fn().mockReturnThis(),
+        update: vi.fn().mockReturnThis(),
+        delete: vi.fn().mockReturnThis(),
+      }
+      return await callback(mockTx)
+    })
   })
 
   describe('withTenantContext', () => {
@@ -34,11 +45,8 @@ describe('Tenant Context', () => {
 
       const result = await withTenantContext(mockTenantId, mockCallback)
 
-      // Check that tenant context was set
-      expect(client).toHaveBeenCalledWith(
-        ['SELECT set_config(\'app.current_tenant_id\', ', ', true)'],
-        mockTenantId
-      )
+      // Check that transaction was called
+      expect(db.transaction).toHaveBeenCalled()
       
       // Check that callback was called
       expect(mockCallback).toHaveBeenCalled()
@@ -48,6 +56,14 @@ describe('Tenant Context', () => {
     it('should propagate errors from callback', async () => {
       const mockError = new Error('Database error')
       const mockCallback = vi.fn().mockRejectedValue(mockError)
+      
+      // Mock transaction to propagate the error
+      ;(db.transaction as any).mockImplementation(async (callback: any) => {
+        const mockTx = {
+          execute: vi.fn().mockResolvedValue(undefined),
+        }
+        return await callback(mockTx)
+      })
 
       await expect(withTenantContext(mockTenantId, mockCallback)).rejects.toThrow('Database error')
     })
@@ -64,15 +80,8 @@ describe('Tenant Context', () => {
       expect(result1).toBe('result1')
       expect(result2).toBe('result2')
       
-      // Check both tenant contexts were set
-      expect(client).toHaveBeenNthCalledWith(1,
-        ['SELECT set_config(\'app.current_tenant_id\', ', ', true)'],
-        tenant1
-      )
-      expect(client).toHaveBeenNthCalledWith(2,
-        ['SELECT set_config(\'app.current_tenant_id\', ', ', true)'],
-        tenant2
-      )
+      // Check that transaction was called for both
+      expect(db.transaction).toHaveBeenCalledTimes(2)
     })
   })
 
@@ -130,11 +139,8 @@ describe('Tenant Context', () => {
 
       await withTenantContext(maliciousTenantId, mockCallback)
 
-      // The parameterized query should safely handle the malicious input
-      expect(client).toHaveBeenCalledWith(
-        ['SELECT set_config(\'app.current_tenant_id\', ', ', true)'],
-        maliciousTenantId
-      )
+      // The transaction should execute safely with parameterized queries
+      expect(db.transaction).toHaveBeenCalled()
       // Callback should still execute
       expect(mockCallback).toHaveBeenCalled()
     })

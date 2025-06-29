@@ -29,7 +29,7 @@ const result = await withTenantContext(tenantId, async (db) => {
 });
 ```
 
-The `withTenantContext` function sets the PostgreSQL session variable `app.current_tenant_id` which is used by RLS policies to filter data automatically.
+The `withTenantContext` function uses PostgreSQL transactions to set the session variable `app.current_tenant_id` within transaction scope, which automatically resets when the transaction ends, preventing tenant context leakage in connection pools.
 
 #### 2. RLS Policies
 
@@ -42,13 +42,17 @@ CREATE POLICY tenant_isolation ON users
   USING (tenant_id = current_setting('app.current_tenant_id')::uuid);
 ```
 
-#### 3. Session Variables
+#### 3. Transaction-Level Context
 
-Tenant ID is set as a session variable:
+Tenant ID is set within transaction scope for automatic cleanup:
 
 ```typescript
-// Set in database connection
-await sql`SET app.current_tenant_id = ${tenantId}`;
+// Set within transaction (automatically cleaned up)
+await database.transaction(async (tx) => {
+  await tx.execute(sql`SELECT set_config('app.current_tenant_id', ${tenantId}, true)`)
+  // All operations here are tenant-scoped
+  // Context automatically resets when transaction ends
+})
 ```
 
 ## Security Considerations

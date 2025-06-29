@@ -189,14 +189,14 @@ export async function inviteUserToTenant(
   }
 
   return await withTenantContext(tenantId, async (db) => {
-    return await db.transaction(async (tx) => {
+    return await db.transaction(async (tx: any) => {
       // Find or create user (user lookup doesn't need tenant context)
       let user = await tx
         .select()
         .from(users)
         .where(eq(users.email, userEmail))
         .limit(1)
-        .then(result => result[0])
+        .then((result: any) => result[0])
 
       if (!user) {
         const [newUser] = await tx

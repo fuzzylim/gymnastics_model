@@ -22,17 +22,17 @@ import { tenants, tenantMemberships, users, User, Tenant, TenantMembership } fro
  */
 export async function withTenantContext<T>(
     tenantId: string,
-    callback: (db: typeof database) => Promise<T>
+    callback: (db: any) => Promise<T>
 ): Promise<T> {
-    // Set the tenant context for RLS
-    await client`SELECT set_config('app.current_tenant_id', ${tenantId}, true)`
-    
-    try {
-        // Execute the callback with the tenant-scoped db
-        return await callback(database)
-    } catch (error) {
-        throw error
-    }
+    // Use transaction-level setting for better isolation
+    // This automatically resets when the transaction ends
+    return await database.transaction(async (tx) => {
+        // Set tenant context within transaction scope
+        await tx.execute(sql`SELECT set_config('app.current_tenant_id', ${tenantId}, true)`)
+        
+        // Execute the callback with the transaction-scoped db
+        return await callback(tx)
+    })
 }
 
 export class TenantContext {
