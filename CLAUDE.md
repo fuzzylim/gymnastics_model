@@ -38,8 +38,8 @@ Modern Next.js application with:
 ### Phase 1: Foundation
 
 - [x] Initialise Next.js project with TypeScript
-- [ ] Setup Drizzle ORM with PostgreSQL
-- [ ] Configure multi-tenant database schema
+- [x] Setup Drizzle ORM with PostgreSQL
+- [x] Configure multi-tenant database schema
 - [ ] Setup development environment
 
 ### Phase 2: Authentication
