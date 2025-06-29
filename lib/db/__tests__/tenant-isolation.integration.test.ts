@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { db } from '../index'
 import { withTenantContext } from '../tenant-context'
 import { tenants, users, tenantMemberships } from '../schema'
-import { eq, and } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { createTenantWithOwner } from '../tenant-utils'
 
 // Skip this test file if not in integration test mode

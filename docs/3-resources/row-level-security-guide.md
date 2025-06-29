@@ -11,8 +11,8 @@ Row-Level Security (RLS) provides database-level tenant isolation in our multi-t
 The RLS setup is automated through scripts in the `scripts/` directory:
 
 1. **setup-rls.sql** - Core RLS policies for all tables
-2. **run-rls-setup.ts** - TypeScript runner for applying RLS
-3. **check-rls.ts** - Verification script for RLS policies
+2. **run-rls-setup.ts** - TypeScript runner for applying RLS (`npm run db:setup-rls`)
+3. **check-rls.ts** - Verification script for RLS policies (`npm run db:check-rls`)
 
 ### Key Concepts
 
@@ -91,6 +91,9 @@ describe('RLS policies', () => {
 ### Manual Testing
 
 ```bash
+# Setup RLS policies
+npm run db:setup-rls
+
 # Run RLS verification
 npm run db:check-rls
 

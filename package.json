@@ -12,6 +12,8 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx lib/db/seed.ts",
+    "db:setup-rls": "tsx scripts/run-rls-setup.ts",
+    "db:check-rls": "tsx scripts/check-rls.ts",
     "db:test": "node scripts/test-db.js",
     "supabase:test": "node scripts/test-supabase-api.js",
     "test": "vitest",
