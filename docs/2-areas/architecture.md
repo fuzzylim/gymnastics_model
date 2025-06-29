@@ -35,7 +35,7 @@ This document outlines the architectural principles and patterns used across the
 
 ### Multi-tenancy
 
-We use a **shared database with row-level security** approach:
+We use a **shared database with row-level security (RLS)** approach:
 
 ```typescript
 // Every table includes tenant_id
@@ -45,12 +45,15 @@ export const users = pgTable('users', {
   // ... other fields
 });
 
-// All queries filtered by tenant
-const tenantUsers = await db
-  .select()
-  .from(users)
-  .where(eq(users.tenantId, currentTenantId));
+// All queries use tenant context wrapper
+import { withTenantContext } from '@/lib/db/tenant-context';
+
+const tenantUsers = await withTenantContext(currentTenantId, async (db) => {
+  return await db.select().from(users);
+});
 ```
+
+Database-level RLS policies ensure tenant isolation is enforced even if application code has bugs. See [RLS Guide](../3-resources/row-level-security-guide.md) for implementation details.
 
 ### Authentication Flow
 
@@ -78,7 +81,7 @@ Client → Next.js Middleware → API Route → Service Layer → Database
 
 ## Security Architecture
 
-### Defense in Depth
+### Defence in Depth
 
 1. **Edge**: Rate limiting, DDoS protection
 2. **Application**: Input validation, CSRF protection
@@ -88,9 +91,11 @@ Client → Next.js Middleware → API Route → Service Layer → Database
 ### Tenant Boundaries
 
 - Separate storage buckets per tenant
-- Database queries always include tenant_id
+- Database queries enforced by Row-Level Security (RLS)
+- All queries wrapped in `withTenantContext` for safety
 - API routes validate tenant membership
 - Background jobs scoped to tenant
+- Session variables set tenant context at connection level
 
 ## Performance Guidelines
 
@@ -122,7 +127,7 @@ Developer → GitHub → CI/CD → Vercel
 ```
 
 ### Environment Strategy
-- Development: Local with Docker
+- Development: Hosted Supabase (recommended) or local PostgreSQL
 - Staging: Vercel preview deployments
 - Production: Vercel with custom domain
 

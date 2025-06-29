@@ -29,6 +29,18 @@ See [todo list in main project](../../CLAUDE.md#implementation-progress)
 - Initialised Next.js 15 with TypeScript and App Router
 - Configured Tailwind CSS and ESLint
 - Set up project structure with multi-tenant considerations
+- Implemented Drizzle ORM with PostgreSQL schema
+- Created multi-tenant database structure with proper relations
+- Added authentication tables for passkeys support
+- Built tenant utilities and context provider
+
+### 2024-06-29: Database Infrastructure Updates
+- Refactored from Docker to hosted Supabase for simpler development
+- Implemented Row-Level Security (RLS) setup scripts
+- Added tenant context provider for secure multi-tenant queries
+- Created database testing infrastructure with Drizzle
+- Enhanced auth utilities with proper tenant isolation
+- Added comprehensive test suite for database operations
 
 ## Technical Decisions
 
@@ -39,10 +51,14 @@ See [todo list in main project](../../CLAUDE.md#implementation-progress)
 | Subdomain-based tenant resolution | Better for SEO and branding | 2024-01-29 |
 | Next.js 15 App Router | Latest stable version with improved performance | 2024-01-29 |
 | Australian English | Localisation for primary market | 2024-01-29 |
+| Drizzle ORM | Type-safe SQL with excellent TypeScript support | 2024-01-29 |
+| Shared database multi-tenancy | Simpler than separate databases, easier scaling | 2024-01-29 |
+| Hosted Supabase over Docker | Simpler setup, better for rapid development | 2024-06-29 |
+| Row-Level Security (RLS) | Database-level tenant isolation for security | 2024-06-29 |
 
 ## Blockers & Risks
 
-- [ ] Need PostgreSQL database for development
+- [x] Need PostgreSQL database for development (Supabase configured)
 - [ ] Passkeys browser support varies
 - [ ] Vercel Edge runtime limitations
 

@@ -39,3 +39,13 @@ next-env.d.ts
 # drizzle
 /drizzle
 .drizzle
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+
+# Test results
+TEST_RESULTS.md
