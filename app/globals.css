@@ -46,7 +46,8 @@
 }
 
 @layer base {
-  * {
+  /* Scoped border application */
+  .bordered-element {
     @apply border-border;
   }
   body {
