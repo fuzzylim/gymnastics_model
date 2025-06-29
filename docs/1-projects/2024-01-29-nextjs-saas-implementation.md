@@ -26,6 +26,9 @@ See [todo list in main project](../../CLAUDE.md#implementation-progress)
 - Created project documentation structure
 - Defined architecture approach
 - Set up PARA filing system for docs
+- Initialised Next.js 15 with TypeScript and App Router
+- Configured Tailwind CSS and ESLint
+- Set up project structure with multi-tenant considerations
 
 ## Technical Decisions
 
@@ -34,6 +37,8 @@ See [todo list in main project](../../CLAUDE.md#implementation-progress)
 | Passkeys via SimpleWebAuthn | Most mature WebAuthn library | 2024-01-29 |
 | Row-level security for multi-tenancy | Simpler than separate databases | 2024-01-29 |
 | Subdomain-based tenant resolution | Better for SEO and branding | 2024-01-29 |
+| Next.js 15 App Router | Latest stable version with improved performance | 2024-01-29 |
+| Australian English | Localisation for primary market | 2024-01-29 |
 
 ## Blockers & Risks
 
