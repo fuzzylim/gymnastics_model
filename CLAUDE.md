@@ -1,12 +1,14 @@
 # Next.js Multi-tenant SaaS with Passkeys
 
+**Language**: This project uses Australian English for all documentation and code.
+
 ## Project Overview
 
 Modern Next.js application with:
 - Passkeys authentication (WebAuthn)
 - Drizzle ORM for database
 - Multi-tenant architecture
-- Vercel deployment optimized
+- Vercel deployment optimised
 
 ## Architecture Decisions
 
@@ -35,7 +37,7 @@ Modern Next.js application with:
 
 ### Phase 1: Foundation
 
-- [ ] Initialize Next.js project with TypeScript
+- [ ] Initialise Next.js project with TypeScript
 - [ ] Setup Drizzle ORM with PostgreSQL
 - [ ] Configure multi-tenant database schema
 - [ ] Setup development environment
@@ -119,6 +121,43 @@ npm run typecheck
 npm run lint
 ```
 
+## Documentation Requirements
+
+**IMPORTANT**: Documentation must be updated with every feature implementation.
+
+### Before Committing
+1. Update relevant project documentation in `docs/1-projects/`
+2. Update area documentation if architecture/security changes in `docs/2-areas/`
+3. Add code examples or guides to `docs/3-resources/` if needed
+4. Ensure all documentation uses Australian English
+
+### Commit Workflow
+```bash
+# 1. Update documentation FIRST
+# 2. Stage all changes including docs
+git add -A
+
+# 3. Commit with descriptive message
+git commit -m "feat: Add tenant isolation with updated docs"
+
+# 4. Push to feature branch
+git push origin feature/branch-name
+
+# 5. Create PR with documentation summary
+gh pr create --title "feat: Add feature" --body "## Changes
+- Implementation details
+- Documentation updates
+- Test coverage"
+```
+
+### PR Checklist
+- [ ] Implementation complete
+- [ ] Tests passing
+- [ ] Documentation updated
+- [ ] Australian English used throughout
+- [ ] PARA structure maintained
+- [ ] Examples provided where relevant
+
 ## Environment Variables
 
 ```env
@@ -150,7 +189,7 @@ VERCEL_URL=
 4. **Data Segregation**: Separate storage buckets per tenant
 5. **Rate Limiting**: Per-tenant rate limits
 
-## Performance Optimizations
+## Performance Optimisations
 
 1. **Edge Runtime**: Auth checks on Vercel Edge
 2. **Database Indexing**: Index on (tenant_id, *) for all tables

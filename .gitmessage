@@ -1,0 +1,22 @@
+# <type>: <subject> (max 50 chars)
+
+# <body> (optional, wrap at 72 chars)
+
+# <footer> (optional)
+
+# Documentation checklist:
+# - [ ] Updated relevant docs in docs/1-projects/
+# - [ ] Updated architecture/security docs if needed
+# - [ ] Added examples to docs/3-resources/ if applicable
+# - [ ] Used Australian English throughout
+# - [ ] Verified all links work
+
+# Type can be:
+#   feat     (new feature)
+#   fix      (bug fix)
+#   docs     (documentation changes)
+#   style    (formatting, missing semi-colons, etc)
+#   refactor (refactoring code)
+#   test     (adding missing tests)
+#   chore    (maintain tasks)
+#   perf     (performance improvements)

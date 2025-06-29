@@ -249,7 +249,7 @@ export const authOptions = {
       id: 'passkey',
       name: 'Passkey',
       credentials: {},
-      async authorize(credentials: any) {
+      async authorise(credentials: any) {
         // Verify passkey authentication
         const result = await verifyAuthentication(credentials);
         

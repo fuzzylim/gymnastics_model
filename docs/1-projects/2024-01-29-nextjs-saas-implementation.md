@@ -22,7 +22,7 @@ See [todo list in main project](../../CLAUDE.md#implementation-progress)
 
 ## Implementation Log
 
-### 2024-01-29: Project Initialization
+### 2024-01-29: Project Initialisation
 - Created project documentation structure
 - Defined architecture approach
 - Set up PARA filing system for docs
