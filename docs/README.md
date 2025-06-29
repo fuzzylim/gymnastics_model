@@ -1,6 +1,6 @@
 # Documentation Structure (PARA Method)
 
-This documentation follows the PARA (Projects, Areas, Resources, Archive) method for organizing information.
+This documentation follows the PARA (Projects, Areas, Resources, Archive) method for organising information.
 
 ## 📁 1-projects/
 Active projects with specific outcomes and deadlines.

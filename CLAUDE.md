@@ -1,12 +1,14 @@
 # Next.js Multi-tenant SaaS with Passkeys
 
+**Language**: This project uses Australian English for all documentation and code.
+
 ## Project Overview
 
 Modern Next.js application with:
 - Passkeys authentication (WebAuthn)
 - Drizzle ORM for database
 - Multi-tenant architecture
-- Vercel deployment optimized
+- Vercel deployment optimised
 
 ## Architecture Decisions
 
@@ -35,7 +37,7 @@ Modern Next.js application with:
 
 ### Phase 1: Foundation
 
-- [ ] Initialize Next.js project with TypeScript
+- [ ] Initialise Next.js project with TypeScript
 - [ ] Setup Drizzle ORM with PostgreSQL
 - [ ] Configure multi-tenant database schema
 - [ ] Setup development environment
@@ -150,7 +152,7 @@ VERCEL_URL=
 4. **Data Segregation**: Separate storage buckets per tenant
 5. **Rate Limiting**: Per-tenant rate limits
 
-## Performance Optimizations
+## Performance Optimisations
 
 1. **Edge Runtime**: Auth checks on Vercel Edge
 2. **Database Indexing**: Index on (tenant_id, *) for all tables

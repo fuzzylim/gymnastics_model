@@ -43,7 +43,7 @@ export async function tenantMiddleware(req: Request) {
   const tenantId = getTenantFromRequest(req);
   
   if (!session.tenants.includes(tenantId)) {
-    throw new UnauthorizedError();
+    throw new UnauthorisedError();
   }
   
   return { tenantId, userId: session.userId };
@@ -73,7 +73,7 @@ export async function tenantMiddleware(req: Request) {
 - Rotate keys annually
 
 ### PII Handling
-- Minimize PII collection
+- Minimise PII collection
 - Implement data retention policies
 - Support GDPR/CCPA requests
 - Audit trail for PII access
@@ -164,10 +164,10 @@ Before deploying any feature:
 - [ ] Input validation implemented
 - [ ] Tenant isolation verified
 - [ ] Authentication required
-- [ ] Authorization checked
+- [ ] Authorisation checked
 - [ ] Rate limiting applied
 - [ ] Logging configured
-- [ ] Error messages sanitized
+- [ ] Error messages sanitised
 - [ ] Security headers set
 - [ ] Dependencies updated
 - [ ] Security tests passing

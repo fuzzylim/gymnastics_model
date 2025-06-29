@@ -7,7 +7,7 @@ This document outlines the architectural principles and patterns used across the
 ## Core Principles
 
 1. **Tenant Isolation**: Every piece of data must be scoped to a tenant
-2. **Security First**: Authentication and authorization at every layer
+2. **Security First**: Authentication and authorisation at every layer
 3. **Performance**: Sub-100ms response times for critical paths
 4. **Scalability**: Horizontal scaling via edge functions
 
@@ -102,7 +102,7 @@ Client → Next.js Middleware → API Route → Service Layer → Database
 ### Application
 - Edge runtime for auth checks
 - Lazy loading per tenant
-- Image optimization with next/image
+- Image optimisation with next/image
 - Code splitting at route level
 
 ### Monitoring
@@ -129,8 +129,8 @@ Developer → GitHub → CI/CD → Vercel
 ## Data Architecture
 
 ### Schema Design Principles
-1. Normalize to 3NF minimum
-2. Denormalize for performance where needed
+1. Normalise to 3NF minimum
+2. Denormalise for performance where needed
 3. Use UUIDs for all primary keys
 4. Soft deletes with deleted_at timestamp
 

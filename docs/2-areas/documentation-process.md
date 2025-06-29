@@ -7,7 +7,7 @@ This document outlines our documentation standards and processes to ensure all f
 ## Documentation Principles
 
 1. **Document as You Code**: Documentation is written alongside implementation
-2. **PARA Method**: Organize docs by Projects, Areas, Resources, Archive
+2. **PARA Method**: Organise docs by Projects, Areas, Resources, Archive
 3. **Living Documentation**: Keep docs updated as code evolves
 4. **User-Focused**: Write for the intended audience
 
@@ -164,7 +164,7 @@ graph LR
 ### Quarterly Tasks
 - Full documentation audit
 - Remove outdated content
-- Reorganize as needed
+- Reorganise as needed
 
 ## Documentation Metrics
 
@@ -186,7 +186,7 @@ Track documentation health:
 - Include background information
 - Link to related resources
 
-### Poor Organization
+### Poor Organisation
 - Follow PARA strictly
 - Use clear naming conventions
 - Maintain consistent structure
