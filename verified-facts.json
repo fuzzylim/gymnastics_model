@@ -1,0 +1,85 @@
+{
+  "files": {
+    "sourceFiles": 58,
+    "testFiles": 18,
+    "e2eFiles": 9
+  },
+  "lines": {
+    "sourceLines": 6459,
+    "testLines": 2045
+  },
+  "tests": {
+    "e2eTestCases": 72,
+    "unitTestCases": 95,
+    "totalTestCases": 167
+  },
+  "dependencies": {
+    "dependencies": 13,
+    "devDependencies": 19,
+    "scripts": 25
+  },
+  "technologies": {
+    "frontend": [
+      "next",
+      "react",
+      "react-dom"
+    ],
+    "backend": [
+      "@auth/drizzle-adapter",
+      "next-auth"
+    ],
+    "database": [
+      "drizzle-orm",
+      "postgres"
+    ],
+    "testing": [
+      "@playwright/test",
+      "@testing-library/react",
+      "vitest"
+    ],
+    "build": [
+      "eslint",
+      "tailwindcss",
+      "typescript"
+    ]
+  },
+  "features": [
+    "Authentication System",
+    "Passkeys Support",
+    "Multi-tenant Architecture",
+    "Team Management",
+    "Settings Management",
+    "Onboarding Flow",
+    "Dashboard",
+    "Database Schema",
+    "Row-Level Security"
+  ],
+  "security": [
+    "Row-Level Security (RLS)",
+    "Authentication Middleware",
+    "Role-Based Access Control"
+  ],
+  "deployment": {
+    "frequency": {
+      "category": "Insufficient data",
+      "totalDeployments": 0,
+      "averageDaysBetween": null
+    },
+    "leadTime": {
+      "category": "Elite (< 1 hour)",
+      "averageHours": 0.64,
+      "averageDays": 0.03,
+      "samples": 1
+    },
+    "changeFailureRate": {
+      "category": "Elite (< 5%)",
+      "rate": 4.35,
+      "fixCommits": 1,
+      "totalCommits": 23
+    },
+    "dora": {
+      "classification": "Elite",
+      "score": 4
+    }
+  }
+}

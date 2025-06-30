@@ -1,0 +1,162 @@
+name: Update Project Metrics
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [main, develop]
+
+jobs:
+  update-metrics:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Generate all project metrics
+        run: npm run metrics:full
+        
+      - name: Verify metrics files generated
+        run: |
+          echo "📊 Checking generated metrics files..."
+          ls -la verified-facts.json deployment-metrics.json
+          echo "✅ Metrics files confirmed"
+          
+      - name: Test metrics pipeline integrity
+        run: npm run metrics:test
+        
+      - name: Update CLAUDE.md with metrics
+        run: |
+          # Extract metrics from verified-facts.json
+          SOURCE_FILES=$(jq -r '.files.sourceFiles' verified-facts.json)
+          SOURCE_LINES=$(jq -r '.lines.sourceLines' verified-facts.json)
+          TEST_LINES=$(jq -r '.lines.testLines' verified-facts.json)
+          UNIT_TESTS=$(jq -r '.tests.unitTestCases' verified-facts.json)
+          E2E_TESTS=$(jq -r '.tests.e2eTestCases' verified-facts.json)
+          TOTAL_TESTS=$(jq -r '.tests.totalTestCases' verified-facts.json)
+          FEATURES=$(jq -r '.features | length' verified-facts.json)
+          SECURITY=$(jq -r '.security | length' verified-facts.json)
+          PROD_DEPS=$(jq -r '.dependencies.dependencies' verified-facts.json)
+          DEV_DEPS=$(jq -r '.dependencies.devDependencies' verified-facts.json)
+          
+          # Extract deployment metrics
+          DEPLOY_FREQ=$(jq -r '.deployment.frequency.category' verified-facts.json)
+          DEPLOY_COUNT=$(jq -r '.deployment.frequency.totalDeployments' verified-facts.json)
+          LEAD_TIME=$(jq -r '.deployment.leadTime.category' verified-facts.json)
+          LEAD_TIME_DAYS=$(jq -r '.deployment.leadTime.averageDays' verified-facts.json)
+          DORA_CLASS=$(jq -r '.deployment.dora.classification' verified-facts.json)
+          DORA_SCORE=$(jq -r '.deployment.dora.score' verified-facts.json)
+          
+          # Update the metrics table in CLAUDE.md
+          sed -i "s/| Source Files | .* |/| Source Files | $SOURCE_FILES | ↗️ |/" CLAUDE.md
+          sed -i "s/| Source Code Lines | .* |/| Source Code Lines | $SOURCE_LINES | ↗️ |/" CLAUDE.md
+          sed -i "s/| Test Code Lines | .* |/| Test Code Lines | $TEST_LINES | ↗️ |/" CLAUDE.md
+          sed -i "s/| Total Test Cases | .* |/| Total Test Cases | $TOTAL_TESTS ($UNIT_TESTS unit + $E2E_TESTS E2E) | ↗️ |/" CLAUDE.md
+          sed -i "s/| Major Features | .* |/| Major Features | $FEATURES | ↗️ |/" CLAUDE.md
+          sed -i "s/| Security Features | .* |/| Security Features | $SECURITY | ↗️ |/" CLAUDE.md
+          sed -i "s/| Dependencies | .* |/| Dependencies | $PROD_DEPS production + $DEV_DEPS dev | → |/" CLAUDE.md
+          
+          # Update deployment metrics in CLAUDE.md
+          sed -i "s/| \*\*Deployment Frequency\*\* | .* |/| **Deployment Frequency** | $DEPLOY_FREQ ($DEPLOY_COUNT total) | → |/" CLAUDE.md
+          if [ "$LEAD_TIME_DAYS" != "null" ]; then
+            sed -i "s/| \*\*Lead Time (Acceptance→Deploy)\*\* | .* |/| **Lead Time (Acceptance→Deploy)** | $LEAD_TIME (${LEAD_TIME_DAYS}d avg) | → |/" CLAUDE.md
+          else
+            sed -i "s/| \*\*Lead Time (Acceptance→Deploy)\*\* | .* |/| **Lead Time (Acceptance→Deploy)** | $LEAD_TIME | → |/" CLAUDE.md
+          fi
+          if [ "$DORA_SCORE" != "null" ]; then
+            sed -i "s/| \*\*DORA Classification\*\* | .* |/| **DORA Classification** | $DORA_CLASS ($DORA_SCORE\/4.0) | → |/" CLAUDE.md
+          else
+            sed -i "s/| \*\*DORA Classification\*\* | .* |/| **DORA Classification** | $DORA_CLASS | → |/" CLAUDE.md
+          fi
+          
+          # Update the last updated timestamp
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          sed -i "s/*Last updated: .*/*Last updated: $TIMESTAMP/" CLAUDE.md
+        
+      - name: Commit metrics update
+        if: github.event_name == 'push'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add CLAUDE.md verified-facts.json deployment-metrics.json
+          git diff --staged --quiet || git commit -m "📊 Auto-update project metrics
+          
+          **Code Metrics:**
+          - Source files: $(jq -r '.files.sourceFiles' verified-facts.json)
+          - Code lines: $(jq -r '.lines.sourceLines' verified-facts.json)
+          - Test cases: $(jq -r '.tests.totalTestCases' verified-facts.json)
+          - Features: $(jq -r '.features | length' verified-facts.json)
+          
+          **DevOps Metrics:**
+          - Deployment freq: $(jq -r '.deployment.frequency.category' verified-facts.json)
+          - Lead time: $(jq -r '.deployment.leadTime.category' verified-facts.json)
+          - DORA class: $(jq -r '.deployment.dora.classification' verified-facts.json)"
+          git push
+          
+      - name: Comment PR with metrics
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const facts = JSON.parse(fs.readFileSync('verified-facts.json', 'utf8'));
+            
+            const metricsComment = `## 📊 Project Metrics Update
+            
+            **Verified Codebase Statistics:**
+            
+            | Metric | Value |
+            |--------|-------|
+            | Source Files | ${facts.files.sourceFiles} |
+            | Source Code Lines | ${facts.lines.sourceLines.toLocaleString()} |
+            | Test Code Lines | ${facts.lines.testLines.toLocaleString()} |
+            | Test Cases | ${facts.tests.totalTestCases} (${facts.tests.unitTestCases} unit + ${facts.tests.e2eTestCases} E2E) |
+            | Features Implemented | ${facts.features.length} |
+            | Security Features | ${facts.security.length} |
+            | Dependencies | ${facts.dependencies.dependencies} production + ${facts.dependencies.devDependencies} dev |
+            | **Deployment Frequency** | ${facts.deployment.frequency.category} |
+            | **Lead Time** | ${facts.deployment.leadTime.category} |
+            | **DORA Classification** | ${facts.deployment.dora.classification} |
+            
+            **Implemented Features:**
+            ${facts.features.map(f => `✅ ${f}`).join('\n')}
+            
+            **Security Implementations:**
+            ${facts.security.map(s => `🔒 ${s}`).join('\n')}
+            
+            **DevOps Metrics:**
+            🚀 **Deployment Frequency:** ${facts.deployment.frequency.category}
+            ⏱️ **Lead Time:** ${facts.deployment.leadTime.category}${facts.deployment.leadTime.averageDays ? ` (${facts.deployment.leadTime.averageDays} days avg)` : ''}
+            🔧 **Change Failure Rate:** ${facts.deployment.changeFailureRate.category}
+            🏆 **DORA Maturity:** ${facts.deployment.dora.classification}
+            
+            ---
+            *Generated automatically by [fact-check-report.js](./scripts/fact-check-report.js)*
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: metricsComment
+            });
+            
+      - name: Upload metrics artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-metrics
+          path: |
+            verified-facts.json
+            deployment-metrics.json
+            CLAUDE.md
+          retention-days: 30

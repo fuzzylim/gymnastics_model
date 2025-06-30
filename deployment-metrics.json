@@ -1,0 +1,47 @@
+{
+  "collectedAt": "2025-06-30T22:59:21.499Z",
+  "repository": {
+    "totalCommits": 23,
+    "totalPRs": 1,
+    "analysisFromDate": "2025-06-29T10:25:35.000Z",
+    "analysisToDate": "2025-06-30T12:05:36.000Z"
+  },
+  "deploymentFrequency": {
+    "totalDeployments": 0,
+    "frequency": "Insufficient data",
+    "averageDaysBetween": null,
+    "deploymentRate": "N/A"
+  },
+  "leadTime": {
+    "averageLeadTimeHours": 0.64,
+    "averageLeadTimeDays": 0.03,
+    "medianLeadTimeHours": 0.64,
+    "leadTimeCategory": "Elite (< 1 hour)",
+    "samples": 1,
+    "details": [
+      {
+        "prNumber": 1,
+        "leadTimeHours": 0.64,
+        "leadTimeDays": 0.03,
+        "startDate": "2025-06-29T10:25:35.000Z",
+        "endDate": "2025-06-29T11:04:13.000Z"
+      }
+    ]
+  },
+  "changeFailureRate": {
+    "totalCommits": 23,
+    "fixCommits": 1,
+    "changeFailureRate": 4.35,
+    "category": "Elite (< 5%)"
+  },
+  "deployments": [],
+  "dora": {
+    "classification": "Elite",
+    "scores": {
+      "deploymentFrequency": 4,
+      "leadTime": 4,
+      "changeFailureRate": 4
+    },
+    "averageScore": 4
+  }
+}

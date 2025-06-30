@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { getTenantByDomain, getTenantBySlug } from './lib/db/tenant-utils'
 import { auth } from './lib/auth/config'
 
 /**
@@ -85,28 +84,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // Fetch tenant from database
+  // For Edge Runtime compatibility, we'll pass tenant info via headers
+  // and resolve the actual tenant on the server side
   try {
-    const tenant = isCustomDomain
-      ? await getTenantByDomain(subdomain)
-      : await getTenantBySlug(subdomain)
-
-    if (!tenant) {
-      return NextResponse.redirect(new URL('/', request.url))
-    }
-
-    // Add tenant and user info to request headers
+    // Add tenant slug and user info to request headers for server-side resolution
     const headers = new Headers(request.headers)
-    headers.set('x-tenant-id', tenant.id)
-    headers.set('x-tenant-slug', tenant.slug)
+    headers.set('x-tenant-slug', subdomain)
     
     if (session?.user?.id) {
       headers.set('x-user-id', session.user.id)
     }
 
-    // For authenticated users, we could add tenant membership validation here
-    // This will be implemented when we integrate with tenant context
-    
     // Modify the URL for local development to remove tenant from path
     // e.g. /tenant-slug/dashboard -> /dashboard
     if (isLocalhost && pathname.startsWith(`/${subdomain}`)) {
@@ -118,7 +106,7 @@ export async function middleware(request: NextRequest) {
     // For production, just add tenant headers and continue
     return NextResponse.next({ headers })
   } catch (error) {
-    console.error('Tenant resolution error:', error)
+    console.error('Middleware error:', error)
     return NextResponse.redirect(new URL('/', request.url))
   }
 }

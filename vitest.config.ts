@@ -12,6 +12,9 @@ export default defineConfig({
       '**/node_modules/**',
       '**/supabase/db/data/**',
       '**/supabase/storage/**',
+      '**/e2e/**',
+      '**/playwright-report/**',
+      '**/test-results/**',
     ],
   },
   resolve: {
