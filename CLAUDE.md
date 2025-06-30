@@ -366,6 +366,15 @@ RP_NAME="Gymnastics Model"
 RP_ID=localhost
 ORIGIN=http://localhost:3000
 
+# Stripe (Billing)
+STRIPE_SECRET_KEY=sk_test_[your-stripe-secret-key]
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_[your-stripe-publishable-key]
+STRIPE_WEBHOOKS_SECRET=whsec_[your-webhook-signing-secret]
+STRIPE_CUSTOMER_PORTAL_URL=https://billing.stripe.com/p/login/[your-portal-url]
+
+# Application
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
 # Redis (optional)
 UPSTASH_REDIS_REST_URL=
 UPSTASH_REDIS_REST_TOKEN=
@@ -401,18 +410,18 @@ UPSTASH_REDIS_REST_TOKEN=
 **Verified Facts Generation**: Use `node scripts/fact-check-report.js` to generate accurate metrics.
 
 ### Current Metrics (Auto-Updated)
-*Last updated: 2025-06-30 22:59:21 UTC*
+*Last updated: 2025-06-30 23:37:40 UTC*
 
 | Metric | Value | Trend |
 |--------|-------|-------|
-| Source Files | 58 | ↗️ |
-| Source Code Lines | 6,459 | ↗️ |
+| Source Files | 81 | ↗️ |
+| Source Code Lines | 9,978 | ↗️ |
 | Test Code Lines | 2,045 | ↗️ |
 | Total Test Cases | 167 (95 unit + 72 E2E) | ↗️ |
 | Major Features | 9 | ↗️ |
 | Security Features | 3 | ↗️ |
-| Dependencies | 13 production + 19 dev | → |
-| **Deployment Frequency** | Insufficient data (0 total) | → |
+| Dependencies | 17 production + 19 dev | → |
+| **Deployment Frequency** | Insufficient data (1 total) | → |
 | **Lead Time (Acceptance→Deploy)** | Elite (< 1 hour) (0.03d avg) | → |
 | **DORA Classification** | Elite (4/4.0) | → |
 

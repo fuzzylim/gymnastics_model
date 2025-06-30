@@ -1,13 +1,13 @@
 {
-  "collectedAt": "2025-06-30T22:59:21.499Z",
+  "collectedAt": "2025-06-30T23:37:40.253Z",
   "repository": {
-    "totalCommits": 23,
+    "totalCommits": 24,
     "totalPRs": 1,
     "analysisFromDate": "2025-06-29T10:25:35.000Z",
-    "analysisToDate": "2025-06-30T12:05:36.000Z"
+    "analysisToDate": "2025-06-30T23:15:10.000Z"
   },
   "deploymentFrequency": {
-    "totalDeployments": 0,
+    "totalDeployments": 1,
     "frequency": "Insufficient data",
     "averageDaysBetween": null,
     "deploymentRate": "N/A"
@@ -29,12 +29,22 @@
     ]
   },
   "changeFailureRate": {
-    "totalCommits": 23,
+    "totalCommits": 24,
     "fixCommits": 1,
-    "changeFailureRate": 4.35,
+    "changeFailureRate": 4.17,
     "category": "Elite (< 5%)"
   },
-  "deployments": [],
+  "deployments": [
+    {
+      "hash": "4b55ca64df7bc86b67bcb6e3640f128c7009f2bc",
+      "date": "2025-06-30T23:15:10.000Z",
+      "message": "feat: Implement comprehensive metrics and deployment tracking system",
+      "author": "Kelvin Lim",
+      "timestamp": 1751325310000,
+      "type": "deployment",
+      "deploymentReason": "Feature deployment"
+    }
+  ],
   "dora": {
     "classification": "Elite",
     "scores": {

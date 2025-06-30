@@ -7,7 +7,7 @@ import type { Tenant } from '../db/schema'
  * This runs on the server side and can access the database
  */
 export async function getTenantFromHeaders(): Promise<Tenant | null> {
-  const headersList = headers()
+  const headersList = await headers()
   const tenantSlug = headersList.get('x-tenant-slug')
   
   if (!tenantSlug) {
@@ -25,8 +25,8 @@ export async function getTenantFromHeaders(): Promise<Tenant | null> {
 /**
  * Get current user ID from middleware headers
  */
-export function getUserFromHeaders(): string | null {
-  const headersList = headers()
+export async function getUserFromHeaders(): Promise<string | null> {
+  const headersList = await headers()
   return headersList.get('x-user-id')
 }
 
@@ -39,7 +39,7 @@ export async function getTenantAndUserFromHeaders(): Promise<{
 }> {
   const [tenant, userId] = await Promise.all([
     getTenantFromHeaders(),
-    Promise.resolve(getUserFromHeaders())
+    getUserFromHeaders()
   ])
 
   return { tenant, userId }

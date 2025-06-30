@@ -1,11 +1,11 @@
 {
   "files": {
-    "sourceFiles": 58,
+    "sourceFiles": 81,
     "testFiles": 18,
     "e2eFiles": 9
   },
   "lines": {
-    "sourceLines": 6459,
+    "sourceLines": 9978,
     "testLines": 2045
   },
   "tests": {
@@ -14,7 +14,7 @@
     "totalTestCases": 167
   },
   "dependencies": {
-    "dependencies": 13,
+    "dependencies": 17,
     "devDependencies": 19,
     "scripts": 25
   },
@@ -62,7 +62,7 @@
   "deployment": {
     "frequency": {
       "category": "Insufficient data",
-      "totalDeployments": 0,
+      "totalDeployments": 1,
       "averageDaysBetween": null
     },
     "leadTime": {
@@ -73,9 +73,9 @@
     },
     "changeFailureRate": {
       "category": "Elite (< 5%)",
-      "rate": 4.35,
+      "rate": 4.17,
       "fixCommits": 1,
-      "totalCommits": 23
+      "totalCommits": 24
     },
     "dora": {
       "classification": "Elite",
