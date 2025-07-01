@@ -37,13 +37,6 @@ export default function LoginPage() {
 
       // Start authentication
       const authResponse = await startAuthentication(options)
-      
-      console.log('Client auth response:', {
-        id: authResponse.id,
-        rawId: authResponse.rawId,
-        type: authResponse.type,
-        response: authResponse.response,
-      })
 
       // Verify authentication
       const verificationResponse = await fetch('/api/auth/passkey/authenticate/verify', {

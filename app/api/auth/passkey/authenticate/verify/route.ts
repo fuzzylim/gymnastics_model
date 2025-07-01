@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyPasskeyAuthentication } from '@/lib/auth/passkeys'
-import { getUserById, getUserByEmail } from '@/lib/db/auth-utils'
-import { signIn } from '@/lib/auth/config'
+import { getUserById, getUserByEmail, createSession } from '@/lib/db/auth-utils'
+import { cookies } from 'next/headers'
+import { randomBytes } from 'crypto'
 
 export async function POST(request: NextRequest) {
   try {
@@ -46,10 +47,31 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      // Create session using NextAuth
+      // Create NextAuth session
       try {
-        // Note: We'll need to integrate this with NextAuth's session creation
-        // For now, return success with user info
+        // Generate session token
+        const sessionToken = randomBytes(32).toString('hex')
+        
+        // Session expires in 30 days
+        const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+        
+        // Create session in database
+        await createSession({
+          sessionToken,
+          userId: user.id,
+          expires,
+        })
+        
+        // Set session cookie
+        const cookieStore = cookies()
+        cookieStore.set('authjs.session-token', sessionToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          expires,
+          path: '/',
+        })
+        
         return NextResponse.json({
           verified: true,
           user: {
@@ -59,8 +81,8 @@ export async function POST(request: NextRequest) {
           },
           message: 'Authentication successful',
         })
-      } catch (signInError) {
-        console.error('Error creating session:', signInError)
+      } catch (sessionError) {
+        console.error('Error creating session:', sessionError)
         return NextResponse.json(
           { error: 'Failed to create session' },
           { status: 500 }
