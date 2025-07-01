@@ -51,7 +51,7 @@ describe('Database Schema', () => {
 
     it('should have subscription status enum with correct values', () => {
       expect(subscriptionStatusEnum).toBeDefined()
-      expect(subscriptionStatusEnum.enumValues).toEqual(['active', 'cancelled', 'past_due', 'trialing'])
+      expect(subscriptionStatusEnum.enumValues).toEqual(['active', 'cancelled', 'past_due', 'trialing', 'incomplete', 'incomplete_expired', 'unpaid'])
     })
   })
 

@@ -1,17 +1,17 @@
 {
   "files": {
     "sourceFiles": 89,
-    "testFiles": 11,
-    "e2eFiles": 2
+    "testFiles": 16,
+    "e2eFiles": 3
   },
   "lines": {
     "sourceLines": 11100,
-    "testLines": 1201
+    "testLines": 1658
   },
   "tests": {
-    "e2eTestCases": 6,
-    "unitTestCases": 95,
-    "totalTestCases": 101
+    "e2eTestCases": 9,
+    "unitTestCases": 147,
+    "totalTestCases": 156
   },
   "dependencies": {
     "dependencies": 17,
@@ -73,9 +73,9 @@
     },
     "changeFailureRate": {
       "category": "High (< 15%)",
-      "rate": 13.33,
+      "rate": 12.5,
       "fixCommits": 4,
-      "totalCommits": 30
+      "totalCommits": 32
     },
     "dora": {
       "classification": "Elite",
