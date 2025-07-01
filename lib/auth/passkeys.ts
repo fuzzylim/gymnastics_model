@@ -198,7 +198,24 @@ export async function verifyPasskeyAuthentication(
   }
 
   // Get credential from database
-  const credentialId = isoBase64URL.fromBuffer(authenticationResponse.rawId)
+  console.log('Raw authentication response:', {
+    hasRawId: !!authenticationResponse.rawId,
+    rawIdType: typeof authenticationResponse.rawId,
+    rawId: authenticationResponse.rawId,
+    hasId: !!authenticationResponse.id,
+    id: authenticationResponse.id,
+  })
+  
+  // The rawId might be a base64url string already, not a buffer
+  let credentialId: string
+  if (typeof authenticationResponse.rawId === 'string') {
+    credentialId = authenticationResponse.rawId
+  } else if (authenticationResponse.id) {
+    // Sometimes the credential ID is in the 'id' field as a base64url string
+    credentialId = authenticationResponse.id
+  } else {
+    credentialId = isoBase64URL.fromBuffer(authenticationResponse.rawId)
+  }
   
   console.log('Authentication debug:', {
     credentialId,
