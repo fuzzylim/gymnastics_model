@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyPasskeyAuthentication } from '@/lib/auth/passkeys'
-import { getUserById } from '@/lib/db/auth-utils'
+import { getUserById, getUserByEmail } from '@/lib/db/auth-utils'
 import { signIn } from '@/lib/auth/config'
 
 export async function POST(request: NextRequest) {
@@ -14,9 +14,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // If email is provided, get the userId for targeted verification
+    let expectedUserId: string | undefined
+    if (email) {
+      const user = await getUserByEmail(email)
+      if (user) {
+        expectedUserId = user.id
+      }
+    }
+
     const verification = await verifyPasskeyAuthentication(
       authenticationResponse,
-      email // This helps with targeted verification if provided
+      expectedUserId // Pass userId, not email
     )
 
     if (verification.verified && verification.userId) {
