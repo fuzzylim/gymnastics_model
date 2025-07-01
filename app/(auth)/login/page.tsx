@@ -186,7 +186,7 @@ export default function LoginPage() {
         {!supportsPasskeys && (
           <div className="rounded-md bg-yellow-50 p-4">
             <div className="text-sm text-yellow-700">
-              Your device doesn't support passkeys. Please use the magic link option above.
+              Your device doesn&apos;t support passkeys. Please use the magic link option above.
             </div>
           </div>
         )}

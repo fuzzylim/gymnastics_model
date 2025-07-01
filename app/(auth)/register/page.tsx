@@ -221,14 +221,14 @@ export default function RegisterPage() {
       {!supportsPasskeys && (
         <div className="rounded-md bg-yellow-50 p-4">
           <div className="text-sm text-yellow-700">
-            Your device doesn't support passkeys. Please use the magic link option above.
+            Your device doesn&apos;t support passkeys. Please use the magic link option above.
           </div>
         </div>
       )}
 
       <div className="text-xs text-center text-gray-500 mt-4">
         <p>
-          Passkeys provide secure, passwordless authentication using your device's built-in security features like fingerprint, face recognition, or PIN.
+          Passkeys provide secure, passwordless authentication using your device&apos;s built-in security features like fingerprint, face recognition, or PIN.
         </p>
       </div>
     </div>

@@ -2,10 +2,15 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import * as schema from './schema'
 
-// Load environment variables in development
-if (process.env.NODE_ENV !== 'production') {
-  const { config } = require('dotenv')
-  config()
+// Load environment variables in development (not in Edge Runtime)
+if (process.env.NODE_ENV !== 'production' && typeof EdgeRuntime === 'undefined') {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { config } = require('dotenv')
+    config()
+  } catch {
+    // Dotenv not available in Edge Runtime, ignore
+  }
 }
 
 if (!process.env.DATABASE_URL) {

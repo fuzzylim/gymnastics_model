@@ -17,10 +17,24 @@
     "db:test": "node scripts/test-db.js",
     "supabase:test": "node scripts/test-supabase-api.js",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "test:e2e:fast": "playwright test --project=chromium --workers=4",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
+    "metrics:generate": "node scripts/fact-check-report.js",
+    "metrics:update": "node scripts/update-claude-metrics.js",
+    "metrics:deployment": "node scripts/deployment-metrics.js",
+    "metrics:full": "npm run metrics:generate && npm run metrics:update",
+    "metrics:test": "node scripts/test-metrics-pipeline.js",
+    "pr:validate": "node scripts/validate-pr-ready.js"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.10.0",
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-dropdown-menu": "^2.1.15",
+    "@radix-ui/react-progress": "^1.1.7",
     "@simplewebauthn/browser": "^9.0.1",
     "@simplewebauthn/server": "^9.0.3",
     "clsx": "^2.1.1",
@@ -31,10 +45,12 @@
     "postgres": "^3.4.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "stripe": "^18.2.1",
     "tailwind-merge": "^2.6.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.53.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@types/node": "^22.0.0",
