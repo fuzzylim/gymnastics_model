@@ -189,8 +189,16 @@ export async function verifyPasskeyAuthentication(
 
   // Get credential from database
   const credentialId = isoBase64URL.fromBuffer(authenticationResponse.rawId)
-  const credential = await getUserCredentials(challengeRecord.userId || '')
-    .then(creds => creds.find(c => c.credentialId === credentialId))
+  
+  // If no userId in challenge, find credential by credentialId across all users
+  let credential: any = null
+  if (challengeRecord.userId) {
+    const credentials = await getUserCredentials(challengeRecord.userId)
+    credential = credentials.find(c => c.credentialId === credentialId)
+  } else {
+    // Fallback: find credential by credentialId globally
+    credential = await getCredentialById(credentialId)
+  }
 
   if (!credential) {
     throw new Error('Credential not found')

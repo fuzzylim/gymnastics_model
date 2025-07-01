@@ -20,6 +20,14 @@ export async function POST(request: NextRequest) {
     )
 
     if (verification.verified && verification.userId) {
+      // Validate userId is not empty
+      if (!verification.userId.trim()) {
+        return NextResponse.json(
+          { error: 'Invalid user ID returned from verification' },
+          { status: 500 }
+        )
+      }
+      
       const user = await getUserById(verification.userId)
       
       if (!user) {
