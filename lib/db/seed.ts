@@ -4,7 +4,7 @@ import { config } from 'dotenv'
 config()
 
 import { db } from './index'
-import { tenants, users, tenantMemberships } from './schema'
+import { tenants, users, tenantMemberships, billingPlans } from './schema'
 
 export async function seedDatabase() {
   console.log('🌱 Seeding database...')
@@ -72,6 +72,54 @@ export async function seedDatabase() {
       },
     ])
 
+    // Create or update billing plans
+    const billingPlanData = [
+      {
+        name: 'Starter',
+        stripePriceId: 'price_starter_monthly',
+        stripeProductId: 'prod_starter',
+        amount: 2900, // $29.00 AUD
+        currency: 'aud',
+        interval: 'month',
+        features: {
+          maxUsers: 5,
+          maxStorage: 1,
+          apiCalls: 1000,
+        },
+        active: true,
+      },
+      {
+        name: 'Professional',
+        stripePriceId: 'price_professional_monthly',
+        stripeProductId: 'prod_professional',
+        amount: 9900, // $99.00 AUD
+        currency: 'aud',
+        interval: 'month',
+        features: {
+          maxUsers: 25,
+          maxStorage: 10,
+          apiCalls: 10000,
+        },
+        active: true,
+      },
+      {
+        name: 'Enterprise',
+        stripePriceId: 'price_enterprise_monthly',
+        stripeProductId: 'prod_enterprise',
+        amount: 29900, // $299.00 AUD
+        currency: 'aud',
+        interval: 'month',
+        features: {
+          maxUsers: -1, // Unlimited
+          maxStorage: -1, // Unlimited
+          apiCalls: -1, // Unlimited
+        },
+        active: true,
+      },
+    ]
+
+    await db.insert(billingPlans).values(billingPlanData)
+
     console.log('✅ Database seeded successfully!')
     console.log(`Demo users created:`)
     console.log(`  - ${demoUser.email} (${demoUser.id})`)
@@ -79,6 +127,10 @@ export async function seedDatabase() {
     console.log(`Demo tenants created:`)
     console.log(`  - ${acmeTenant.slug} (${acmeTenant.id})`)
     console.log(`  - ${startupTenant.slug} (${startupTenant.id})`)
+    console.log(`Billing plans created:`)
+    console.log(`  - Starter ($29/month)`)
+    console.log(`  - Professional ($99/month)`)
+    console.log(`  - Enterprise ($299/month)`)
 
   } catch (error) {
     console.error('❌ Error seeding database:', error)

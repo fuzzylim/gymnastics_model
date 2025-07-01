@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
-import { TenantProvider, useTenant } from '../tenant-context'
+import { TenantProvider, useTenant } from '../tenant-context.tsx'
 import type { User } from '../db/schema'
 
 // Mock fetch
