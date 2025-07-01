@@ -1,22 +1,22 @@
 {
   "files": {
-    "sourceFiles": 81,
-    "testFiles": 18,
-    "e2eFiles": 9
+    "sourceFiles": 84,
+    "testFiles": 11,
+    "e2eFiles": 2
   },
   "lines": {
-    "sourceLines": 9978,
-    "testLines": 2045
+    "sourceLines": 10067,
+    "testLines": 1201
   },
   "tests": {
-    "e2eTestCases": 72,
+    "e2eTestCases": 6,
     "unitTestCases": 95,
-    "totalTestCases": 167
+    "totalTestCases": 101
   },
   "dependencies": {
     "dependencies": 17,
     "devDependencies": 19,
-    "scripts": 25
+    "scripts": 26
   },
   "technologies": {
     "frontend": [
@@ -72,14 +72,14 @@
       "samples": 1
     },
     "changeFailureRate": {
-      "category": "Elite (< 5%)",
-      "rate": 4.17,
-      "fixCommits": 1,
-      "totalCommits": 24
+      "category": "High (< 15%)",
+      "rate": 10.71,
+      "fixCommits": 3,
+      "totalCommits": 28
     },
     "dora": {
       "classification": "Elite",
-      "score": 4
+      "score": 3.67
     }
   }
 }

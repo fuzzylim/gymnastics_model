@@ -1,10 +1,10 @@
 {
-  "collectedAt": "2025-06-30T23:37:40.253Z",
+  "collectedAt": "2025-07-01T06:23:20.244Z",
   "repository": {
-    "totalCommits": 24,
+    "totalCommits": 28,
     "totalPRs": 1,
     "analysisFromDate": "2025-06-29T10:25:35.000Z",
-    "analysisToDate": "2025-06-30T23:15:10.000Z"
+    "analysisToDate": "2025-07-01T05:55:59.000Z"
   },
   "deploymentFrequency": {
     "totalDeployments": 1,
@@ -29,10 +29,10 @@
     ]
   },
   "changeFailureRate": {
-    "totalCommits": 24,
-    "fixCommits": 1,
-    "changeFailureRate": 4.17,
-    "category": "Elite (< 5%)"
+    "totalCommits": 28,
+    "fixCommits": 3,
+    "changeFailureRate": 10.71,
+    "category": "High (< 15%)"
   },
   "deployments": [
     {
@@ -50,8 +50,8 @@
     "scores": {
       "deploymentFrequency": 4,
       "leadTime": 4,
-      "changeFailureRate": 4
+      "changeFailureRate": 3
     },
-    "averageScore": 4
+    "averageScore": 3.67
   }
 }
