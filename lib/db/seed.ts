@@ -72,7 +72,7 @@ export async function seedDatabase() {
       },
     ])
 
-    // Create billing plans
+    // Create or update billing plans
     const billingPlanData = [
       {
         name: 'Starter',
