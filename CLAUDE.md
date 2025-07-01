@@ -410,6 +410,7 @@ UPSTASH_REDIS_REST_TOKEN=
 **Verified Facts Generation**: Use `node scripts/fact-check-report.js` to generate accurate metrics.
 
 ### Current Metrics (Auto-Updated)
+
 *Last updated: 2025-07-01 14:56:26 UTC*
 
 | Metric | Value | Trend |
