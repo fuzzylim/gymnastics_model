@@ -19,6 +19,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
+    "test:e2e:fast": "playwright test --project=chromium --workers=4",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:report": "playwright show-report",
