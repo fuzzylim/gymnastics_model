@@ -1,3 +1,6 @@
+// Import the actual implementations
+import { getTenantBySlug, getTenantByDomain } from './db/tenant-utils'
+
 // Re-export tenant utilities for API usage
 export { getTenantBySlug, getTenantByDomain } from './db/tenant-utils'
 
@@ -29,6 +32,3 @@ export const getTenantFromRequest = async (request: Request) => {
   
   return null
 }
-
-// Import the actual implementations
-import { getTenantBySlug, getTenantByDomain } from './db/tenant-utils'

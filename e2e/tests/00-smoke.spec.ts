@@ -21,7 +21,7 @@ test.describe('Smoke Tests', () => {
     await page.goto('/register')
     
     // Check that registration page loads
-    await expect(page.locator('h2')).toBeVisible()
+    await expect(page.locator('h2:has-text("Create your account")')).toBeVisible()
   })
 
   test('should redirect dashboard to login for unauthenticated users', async ({ page }) => {

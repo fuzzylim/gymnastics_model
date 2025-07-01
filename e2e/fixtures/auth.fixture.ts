@@ -12,8 +12,7 @@ type AuthFixtures = {
 async function authenticateWithMagicLink(page: Page, email: string) {
   await page.goto('/login')
   
-  // Click on magic link option if passkeys not available
-  await page.click('text=Continue with Email')
+  // Enter email first (required for magic link button to be enabled)
   
   // Enter email
   await page.fill('input[type="email"]', email)

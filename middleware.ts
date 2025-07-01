@@ -24,8 +24,8 @@ export async function middleware(request: NextRequest) {
   // Define public routes that don't require authentication
   const publicRoutes = [
     '/',
-    '/auth/login',
-    '/auth/register',
+    '/login',
+    '/register',
     '/auth/error',
   ]
 
@@ -36,20 +36,21 @@ export async function middleware(request: NextRequest) {
 
   // Authentication check for protected routes
   if (!session && !isPublicRoute) {
-    const signInUrl = new URL('/auth/login', request.url)
+    const signInUrl = new URL('/login', request.url)
     signInUrl.searchParams.set('callbackUrl', request.url)
     return NextResponse.redirect(signInUrl)
   }
 
   // If authenticated user tries to access auth pages, redirect to dashboard
-  if (session && (pathname.includes('/auth/login') || pathname.includes('/auth/register'))) {
+  if (session && (pathname.includes('/login') || pathname.includes('/register'))) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   // Skip tenant resolution for auth routes and home page
   if (
     pathname === '/' ||
-    pathname.startsWith('/auth/')
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/register')
   ) {
     return NextResponse.next()
   }

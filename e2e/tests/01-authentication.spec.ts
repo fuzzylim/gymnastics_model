@@ -10,14 +10,11 @@ test.describe('Phase 2: Authentication', () => {
       await expect(page.locator('text=Sign in with Passkey')).toBeVisible()
       
       // Check for email option
-      await expect(page.locator('text=Continue with Email')).toBeVisible()
+      await expect(page.locator('text=Send Magic Link')).toBeVisible()
     })
 
     test('should allow magic link authentication', async ({ page }) => {
       await page.goto('/login')
-      
-      // Click email option
-      await page.click('text=Continue with Email')
       
       // Enter email
       await page.fill('input[type="email"]', testData.users.owner.email)
@@ -31,7 +28,6 @@ test.describe('Phase 2: Authentication', () => {
 
     test('should validate email format', async ({ page }) => {
       await page.goto('/login')
-      await page.click('text=Continue with Email')
       
       // Enter invalid email
       await page.fill('input[type="email"]', 'invalid-email')
@@ -57,7 +53,7 @@ test.describe('Phase 2: Authentication', () => {
       await page.goto('/register')
       
       // Should have email option
-      await expect(page.locator('text=Continue with Email')).toBeVisible()
+      await expect(page.locator('text=Send Magic Link')).toBeVisible()
     })
   })
 
