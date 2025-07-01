@@ -13,6 +13,7 @@ import type {
 import { isoBase64URL, isoUint8Array } from '@simplewebauthn/server/helpers'
 import {
   getUserCredentials,
+  getCredentialById,
   createCredential,
   updateCredentialCounter,
   createChallenge,
