@@ -9,6 +9,7 @@ import type {
   GenerateAuthenticationOptionsOpts,
   VerifyRegistrationResponseOpts,
   VerifyAuthenticationResponseOpts,
+  AuthenticatorTransport,
 } from '@simplewebauthn/server'
 import { isoBase64URL, isoUint8Array } from '@simplewebauthn/server/helpers'
 import {
@@ -154,7 +155,7 @@ export async function generatePasskeyAuthenticationOptions({
     allowCredentials = userCredentials.map(cred => ({
       id: isoBase64URL.toBuffer(cred.credentialId),
       type: 'public-key',
-      transports: cred.transports ? JSON.parse(cred.transports as string) : undefined,
+      transports: cred.transports as AuthenticatorTransport[] | undefined,
     }))
   }
 
@@ -251,7 +252,7 @@ export async function verifyPasskeyAuthentication(
       credentialID: isoBase64URL.toBuffer(credential.credentialId),
       credentialPublicKey: Buffer.from(credential.publicKey, 'base64'),
       counter: credential.counter,
-      transports: credential.transports ? JSON.parse(credential.transports as string) : undefined,
+      transports: credential.transports as AuthenticatorTransport[] | undefined,
     },
   }
 
