@@ -1,11 +1,11 @@
 {
   "files": {
-    "sourceFiles": 84,
+    "sourceFiles": 89,
     "testFiles": 11,
     "e2eFiles": 2
   },
   "lines": {
-    "sourceLines": 10067,
+    "sourceLines": 11100,
     "testLines": 1201
   },
   "tests": {
@@ -73,9 +73,9 @@
     },
     "changeFailureRate": {
       "category": "High (< 15%)",
-      "rate": 10.71,
-      "fixCommits": 3,
-      "totalCommits": 28
+      "rate": 13.33,
+      "fixCommits": 4,
+      "totalCommits": 30
     },
     "dora": {
       "classification": "Elite",

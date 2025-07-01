@@ -1,5 +1,6 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
+import { isUserSystemAdmin } from '@/lib/auth/admin-utils'
 import { AdminSidebar } from './components/admin-sidebar'
 
 export default async function AdminLayout({
@@ -9,15 +10,16 @@ export default async function AdminLayout({
 }) {
   const session = await auth()
   
-  // Admin access should be restricted - for now, check if user exists
-  // In production, you'd want to check for specific admin roles or permissions
+  // Check if user is authenticated
   if (!session?.user) {
-    redirect('/login')
+    redirect('/login?callbackUrl=/admin')
   }
 
-  // TODO: Add proper admin role checking
-  // For now, we'll allow any logged-in user to access admin panel for development
-  // In production, this should check for system admin permissions
+  // Check if user has system admin permissions
+  if (!session.user.email || !isUserSystemAdmin(session.user)) {
+    // Redirect to dashboard with error message
+    redirect('/dashboard?error=access_denied')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
