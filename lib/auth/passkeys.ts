@@ -111,10 +111,18 @@ export async function verifyPasskeyRegistration(
 
   if (verification.verified && verification.registrationInfo) {
     const { credentialID, credentialPublicKey, counter } = verification.registrationInfo
+    const credentialIdString = isoBase64URL.fromBuffer(credentialID)
+
+    console.log('Registration debug - saving credential:', {
+      credentialId: credentialIdString,
+      userId,
+      counter,
+      hasTransports: !!registrationResponse.response.transports,
+    })
 
     // Save credential to database
     await createCredential({
-      credentialId: isoBase64URL.fromBuffer(credentialID),
+      credentialId: credentialIdString,
       userId,
       publicKey: Buffer.from(credentialPublicKey).toString('base64'),
       counter,
@@ -125,7 +133,8 @@ export async function verifyPasskeyRegistration(
     // Mark challenge as used
     await markChallengeAsUsed(challengeRecord.id)
 
-    return { verified: true, credentialID: isoBase64URL.fromBuffer(credentialID) }
+    console.log('Registration successful - credential saved:', credentialIdString)
+    return { verified: true, credentialID: credentialIdString }
   }
 
   return { verified: false }
@@ -191,10 +200,17 @@ export async function verifyPasskeyAuthentication(
   // Get credential from database
   const credentialId = isoBase64URL.fromBuffer(authenticationResponse.rawId)
   
+  console.log('Authentication debug:', {
+    credentialId,
+    challengeUserId: challengeRecord.userId,
+    hasRawId: !!authenticationResponse.rawId,
+  })
+  
   // If no userId in challenge, find credential by credentialId across all users
   let credential: any = null
   if (challengeRecord.userId) {
     const credentials = await getUserCredentials(challengeRecord.userId)
+    console.log(`Found ${credentials.length} credentials for user ${challengeRecord.userId}`)
     credential = credentials.find(c => c.credentialId === credentialId)
   } else {
     // Fallback: find credential by credentialId globally
@@ -202,6 +218,10 @@ export async function verifyPasskeyAuthentication(
   }
 
   if (!credential) {
+    console.error('Credential not found:', {
+      searchedCredentialId: credentialId,
+      challengeUserId: challengeRecord.userId,
+    })
     throw new Error('Credential not found')
   }
 
