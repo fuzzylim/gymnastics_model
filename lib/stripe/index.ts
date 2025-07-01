@@ -10,8 +10,10 @@ export {
   deleteStripeCustomer,
   getCustomerPaymentMethods,
   createSetupIntent,
+  createPaymentIntent,
   type CreateCustomerParams,
   type UpdateCustomerParams,
+  type CreatePaymentIntentParams,
 } from './customer'
 
 // Subscription management
@@ -24,6 +26,7 @@ export {
   getTenantSubscription,
   createCustomerPortalSession,
   getSubscriptionUsage,
+  getBillingPlan,
   type CreateSubscriptionParams,
   type UpdateSubscriptionParams,
 } from './subscription'

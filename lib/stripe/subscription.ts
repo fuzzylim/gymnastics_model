@@ -341,3 +341,21 @@ export async function getSubscriptionUsage(subscriptionId: string) {
     throw new Error('Failed to retrieve subscription usage')
   }
 }
+
+/**
+ * Get billing plan by ID
+ */
+export async function getBillingPlan(planId: string) {
+  try {
+    const [plan] = await db
+      .select()
+      .from(billingPlans)
+      .where(eq(billingPlans.id, planId))
+      .limit(1)
+    
+    return plan || null
+  } catch (error) {
+    console.error('Failed to get billing plan:', error)
+    throw new Error('Failed to get billing plan')
+  }
+}

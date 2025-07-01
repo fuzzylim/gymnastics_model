@@ -169,3 +169,43 @@ export async function createSetupIntent(customerId: string) {
     throw new Error('Failed to create setup intent')
   }
 }
+
+export interface CreatePaymentIntentParams {
+  customerId: string
+  amount: number
+  currency: string
+  priceId: string
+  metadata?: Record<string, string>
+}
+
+/**
+ * Create a payment intent for subscription setup
+ */
+export async function createPaymentIntent({
+  customerId,
+  amount,
+  currency,
+  priceId,
+  metadata = {},
+}: CreatePaymentIntentParams) {
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      customer: customerId,
+      amount,
+      currency,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+      setup_future_usage: 'off_session',
+      metadata: {
+        priceId,
+        ...metadata,
+      },
+    })
+    
+    return paymentIntent
+  } catch (error) {
+    console.error('Failed to create payment intent:', error)
+    throw new Error('Failed to create payment intent')
+  }
+}
