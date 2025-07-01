@@ -40,7 +40,7 @@ export default async function TenantsPage() {
     })
   )
 
-  const getSubscriptionStatusBadge = (status: string) => {
+  const getSubscriptionStatusBadge = (status: string | null) => {
     const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
       active: { label: 'Active', variant: 'default' as const },
       trialing: { label: 'Trial', variant: 'secondary' as const },
@@ -49,7 +49,7 @@ export default async function TenantsPage() {
       incomplete: { label: 'Incomplete', variant: 'destructive' as const },
       unpaid: { label: 'Unpaid', variant: 'destructive' as const },
     }
-    return statusMap[status] || { label: status, variant: 'outline' as const }
+    return statusMap[status || 'unknown'] || { label: status || 'Unknown', variant: 'outline' as const }
   }
 
   return (

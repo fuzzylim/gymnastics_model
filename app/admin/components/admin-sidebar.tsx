@@ -3,10 +3,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
-import type { User } from '@/lib/db/schema'
-
 interface AdminSidebarProps {
-  user: User
+  user: {
+    id?: string
+    email?: string | null
+    name?: string | null
+    image?: string | null
+  }
 }
 
 interface NavigationItem {
@@ -93,7 +96,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
     <div className="w-64 bg-white shadow-sm border-r border-gray-200 min-h-screen">
       <div className="p-6 border-b border-gray-200">
         <h2 className="text-lg font-semibold text-gray-900">System Admin</h2>
-        <p className="text-sm text-gray-600">{user.email}</p>
+        <p className="text-sm text-gray-600">{user.email || 'System Admin'}</p>
       </div>
       
       <nav className="mt-8 px-4">

@@ -1,10 +1,10 @@
 {
-  "collectedAt": "2025-07-01T06:23:20.244Z",
+  "collectedAt": "2025-07-01T13:59:00.267Z",
   "repository": {
-    "totalCommits": 28,
+    "totalCommits": 30,
     "totalPRs": 1,
     "analysisFromDate": "2025-06-29T10:25:35.000Z",
-    "analysisToDate": "2025-07-01T05:55:59.000Z"
+    "analysisToDate": "2025-07-01T13:35:24.000Z"
   },
   "deploymentFrequency": {
     "totalDeployments": 1,
@@ -29,9 +29,9 @@
     ]
   },
   "changeFailureRate": {
-    "totalCommits": 28,
-    "fixCommits": 3,
-    "changeFailureRate": 10.71,
+    "totalCommits": 30,
+    "fixCommits": 4,
+    "changeFailureRate": 13.33,
     "category": "High (< 15%)"
   },
   "deployments": [
