@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyPasskeyAuthentication } from '@/lib/auth/passkeys'
-import { getUserById, getUserByEmail, createSession } from '@/lib/db/auth-utils'
-import { cookies } from 'next/headers'
-import { randomBytes } from 'crypto'
+import { getUserById, getUserByEmail } from '@/lib/db/auth-utils'
 
 export async function POST(request: NextRequest) {
   try {
@@ -37,9 +35,9 @@ export async function POST(request: NextRequest) {
           { status: 500 }
         )
       }
-      
+
       const user = await getUserById(verification.userId)
-      
+
       if (!user) {
         return NextResponse.json(
           { error: 'User not found' },
@@ -47,47 +45,16 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      // Create NextAuth session
-      try {
-        // Generate session token
-        const sessionToken = randomBytes(32).toString('hex')
-        
-        // Session expires in 30 days
-        const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-        
-        // Create session in database
-        await createSession({
-          sessionToken,
-          userId: user.id,
-          expires,
-        })
-        
-        // Set session cookie
-        const cookieStore = cookies()
-        cookieStore.set('authjs.session-token', sessionToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          expires,
-          path: '/',
-        })
-        
-        return NextResponse.json({
-          verified: true,
-          user: {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-          },
-          message: 'Authentication successful',
-        })
-      } catch (sessionError) {
-        console.error('Error creating session:', sessionError)
-        return NextResponse.json(
-          { error: 'Failed to create session' },
-          { status: 500 }
-        )
-      }
+      // Return success - the client will use NextAuth signIn to create session
+      return NextResponse.json({
+        verified: true,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        },
+        message: 'Authentication successful. Please wait while we create your session...',
+      })
     } else {
       return NextResponse.json(
         { error: 'Authentication verification failed' },

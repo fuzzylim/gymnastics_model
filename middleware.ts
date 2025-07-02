@@ -18,8 +18,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Get authentication session
-  const session = await auth()
+  // Get authentication session with error handling
+  let session
+  try {
+    session = await auth()
+  } catch (error) {
+    // Handle JWT decode errors (corrupted session cookies)
+    console.warn('Auth session error (likely corrupted cookies):', error instanceof Error ? error.message : 'Unknown error')
+    session = null
+  }
 
   // Define public routes that don't require authentication
   const publicRoutes = [

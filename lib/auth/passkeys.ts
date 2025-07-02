@@ -213,7 +213,7 @@ export async function verifyPasskeyAuthentication(
   }
 
   if (!credential) {
-    throw new Error('Credential not found')
+    throw new Error('Credential not found. Please register a passkey first.')
   }
 
   const opts: VerifyAuthenticationResponseOpts = {

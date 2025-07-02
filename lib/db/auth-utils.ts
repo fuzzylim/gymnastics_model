@@ -26,13 +26,21 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 }
 
 export async function getUserById(id: string): Promise<User | null> {
-  const result = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, id))
-    .limit(1)
+  try {
+    const result = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, id))
+      .limit(1)
 
-  return result[0] || null
+    return result[0] || null
+  } catch (error) {
+    // Handle invalid UUID format
+    if (error instanceof Error && error.message.includes('invalid input syntax for type uuid')) {
+      return null
+    }
+    throw error
+  }
 }
 
 export async function createUser(userData: {
@@ -92,7 +100,9 @@ export async function updateCredentialCounter(credentialId: string, counter: num
   const currentCounter = existingCredential[0].counter;
 
   // Ensure the new counter value is greater than the current counter
-  if (counter <= currentCounter) {
+  // Exception: If stored counter is 0, allow any counter value (including 0)
+  // This handles authenticators that don't implement counters
+  if (currentCounter > 0 && counter <= currentCounter) {
     throw new Error(
       `New counter value (${counter}) must be greater than the current counter value (${currentCounter}).`
     );

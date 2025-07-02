@@ -10,10 +10,17 @@ vi.mock('@/lib/auth/passkeys', () => ({
 vi.mock('@/lib/db/auth-utils', () => ({
   getUserById: vi.fn(),
   getUserByEmail: vi.fn(),
+  createSession: vi.fn(),
 }))
 
 vi.mock('@/lib/auth/config', () => ({
   signIn: vi.fn(),
+}))
+
+vi.mock('next/headers', () => ({
+  cookies: vi.fn(() => ({
+    set: vi.fn(),
+  })),
 }))
 
 describe('Passkey Authentication Verify Endpoint', () => {
@@ -23,7 +30,7 @@ describe('Passkey Authentication Verify Endpoint', () => {
 
   it('should pass userId (not email) to verifyPasskeyAuthentication when email is provided', async () => {
     const { verifyPasskeyAuthentication } = await import('@/lib/auth/passkeys')
-    const { getUserByEmail, getUserById } = await import('@/lib/db/auth-utils')
+    const { getUserByEmail, getUserById, createSession } = await import('@/lib/db/auth-utils')
 
     const mockUser = {
       id: 'user-123',
@@ -42,6 +49,14 @@ describe('Passkey Authentication Verify Endpoint', () => {
     
     // Mock getUserById to return the user
     ;(getUserById as any).mockResolvedValue(mockUser)
+    
+    // Mock createSession
+    ;(createSession as any).mockResolvedValue({
+      id: 'session-123',
+      sessionToken: 'token-123',
+      userId: 'user-123',
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    })
 
     const mockRequest = new NextRequest('http://localhost:3000/api/auth/passkey/authenticate/verify', {
       method: 'POST',
@@ -69,7 +84,7 @@ describe('Passkey Authentication Verify Endpoint', () => {
 
   it('should handle authentication without email (discoverable credentials)', async () => {
     const { verifyPasskeyAuthentication } = await import('@/lib/auth/passkeys')
-    const { getUserById } = await import('@/lib/db/auth-utils')
+    const { getUserById, createSession } = await import('@/lib/db/auth-utils')
 
     const mockUser = {
       id: 'user-456',
@@ -85,6 +100,14 @@ describe('Passkey Authentication Verify Endpoint', () => {
     
     // Mock getUserById to return the user
     ;(getUserById as any).mockResolvedValue(mockUser)
+    
+    // Mock createSession
+    ;(createSession as any).mockResolvedValue({
+      id: 'session-456',
+      sessionToken: 'token-456',
+      userId: 'user-456',
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    })
 
     const mockRequest = new NextRequest('http://localhost:3000/api/auth/passkey/authenticate/verify', {
       method: 'POST',

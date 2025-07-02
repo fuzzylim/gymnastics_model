@@ -54,9 +54,22 @@ export default function LoginPage() {
 
       const result = await verificationResponse.json()
 
-      if (result.verified) {
-        // Redirect to dashboard or home page
-        window.location.href = '/dashboard'
+      if (result.verified && result.user) {
+        // Use NextAuth signIn with the credentials provider
+        const { signIn } = await import('next-auth/react')
+        const signInResult = await signIn('passkey', {
+          userId: result.user.id,
+          email: result.user.email,
+          isPasskeyAuth: 'true',
+          redirect: false,
+        })
+
+        if (signInResult?.ok) {
+          // Redirect to dashboard after successful sign-in
+          window.location.href = '/dashboard'
+        } else {
+          setError('Failed to create session')
+        }
       } else {
         setError('Authentication failed')
       }
